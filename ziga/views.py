@@ -45,12 +45,12 @@ def index():
 def create_event(app_key, channel):
     print app_key, channel, request.json
 
-    event = request.json['event']
+    data = request.json
 
-    data = {
-        'event': event,
-        'data': request.json,
-    }
+    event = data.get('event')
+
+    if not event:
+        return Response(status=400)
 
     redis.publish('{}:{}'.format(app_key, channel, event), json.dumps(data))
 
