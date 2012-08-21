@@ -10,3 +10,6 @@ pytz==2012d
 redis==2.6.2
 hiredis==0.1.1
 Flask-And-Redis==0.3.2
+
+requests==0.13.8
+
