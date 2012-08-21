@@ -14,7 +14,7 @@ class Channel(object):
     def __init__(self, ziga_obj, channel_name):
         self.ziga_obj = ziga_obj
         self.channel_name = channel_name
-        self.url = '{4}://{0}:{1}/ziga/{2}/{3}'.format(self.ziga_obj.host,
+        self.url = '{4}://{0}:{1}/{2}/{3}'.format(self.ziga_obj.host,
                                                     self.ziga_obj.port,
                                                     self.ziga_obj.app_key,
                                                     self.channel_name,
