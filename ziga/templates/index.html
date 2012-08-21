@@ -11,7 +11,7 @@
         console.log('GOT');
         var res = $.parseJSON(event.data);
 
-        $('#test').html('GOT');
+        $('#test').append($('<p>').text(event.data));
     };
 </script>
 </body>

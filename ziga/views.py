@@ -9,7 +9,7 @@ def sse():
     def generate():
         while True:
             sleep(2)
-            yield 'data: ' + json.dumps({'hello': 'world'})
+            yield 'data: ' + json.dumps({'hello': 'world'}) + '\n\n'
 
     return Response(generate(), mimetype = "text/event-stream")
 
