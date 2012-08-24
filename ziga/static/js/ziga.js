@@ -11,7 +11,7 @@ function Channel(baseURL, channelName, token) {
   this.token = token;
 
   this._handleMessage = function (e) {
-    
+
   };
   this._handleOpen = function (e) {
 
