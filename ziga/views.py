@@ -12,7 +12,7 @@ def sse():
             sleep(2)
             yield 'data: ' + json.dumps({'hello': 'world'}) + '\n\n'
 
-    return Response(generate(), mimetype = "text/event-stream")
+    return Response(generate(), mimetype="text/event-stream")
 
 
 @app.route('/<string:app_key>/<string:channel>/', methods=['GET'])
