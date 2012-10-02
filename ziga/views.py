@@ -33,7 +33,7 @@ def sse(app_key, channel):
             out['event'] = json_['event']
             yield 'data: ' + json.dumps(out) + '\n\n'
 
-    return Response(generate(), mimetype = "text/event-stream")
+    return Response(generate(), mimetype="text/event-stream")
 
 
 @app.route('/', methods=['GET'])
