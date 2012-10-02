@@ -11,22 +11,23 @@ function Channel(baseURL, channelName, token) {
   this.token = token;
 
   this._handleMessage = function (e) {
-
+    console.log('GOT', $.parseJSON(e.data));
+    $('#test').append($('<p>').text(e.data));
   };
   this._handleOpen = function (e) {
-
+    alert("open");
   };
   this._handleError = function (e) {
-
+    alert("close");
   };
 }
 
-Channel.prototype.getURL = function () {
+Channel.prototype._getURL = function () {
   return this.baseURL + this.channelName + "/";
 };
 
 Channel.prototype.connect = function () {
-  var url = this.getURL();
+  var url = this._getURL();
 
   this.source = new EventSource(url);
 
@@ -51,7 +52,7 @@ Ziga.prototype.subscribe = function (channelName) {
     return;  // private channel
   }
 
-  channel = new Channel(baseURL, channelName, token);
+  channel = new Channel(this._getURL(), channelName, token);
   channel.connect();
   return channel;
 };
@@ -60,6 +61,6 @@ Ziga.prototype.unsubscribe = function (channelName) {
   return console.log('slogged', channelName);
 };
 
-Ziga.prototype.getURL = function () {
+Ziga.prototype._getURL = function () {
   return "http://localhost:4242/" + this.applicationKey + "/";
 };
