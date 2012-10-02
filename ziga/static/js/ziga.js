@@ -5,25 +5,32 @@
  * Released under the ??? licence.
  */
 
-function Channel(baseURL, channelName, token) {
+var Channel = function (baseURL, channelName, token, functionError, functionOpen) {
+  var self = this;
+
   this.baseURL = baseURL;
   this.channelName = channelName;
   this.token = token;
 
   this._handleMessage = function (e) {
-    console.log('GOT', $.parseJSON(e.data));
-    $('#test').append($('<p>').text(e.data));
+    $(self).trigger("newMessage", $.parseJSON(e.data).data);
   };
   this._handleOpen = function (e) {
-    alert("open");
+    if (functionOpen)
+      functionOpen();
   };
   this._handleError = function (e) {
-    alert("close");
+    if (functionError)
+      functionError();
   };
-}
+};
 
 Channel.prototype._getURL = function () {
   return this.baseURL + this.channelName + "/";
+};
+
+Channel.prototype.on = function(name, callback) {
+  return $(this).on(name, callback);
 };
 
 Channel.prototype.connect = function () {
@@ -43,7 +50,7 @@ function Ziga(applicationKey, options) {
   this.options = options;
 }
 
-Ziga.prototype.subscribe = function (channelName) {
+Ziga.prototype.subscribe = function (channelName, functionError, functionOpen) {
   var channel
     , token;
 
@@ -52,8 +59,9 @@ Ziga.prototype.subscribe = function (channelName) {
     return;  // private channel
   }
 
-  channel = new Channel(this._getURL(), channelName, token);
+  channel = new Channel(this._getURL(), channelName, token, functionError, functionOpen);
   channel.connect();
+
   return channel;
 };
 
