@@ -3,18 +3,6 @@ from flask import Response, json, render_template, jsonify, request
 from ziga import app, redis
 
 
-@app.route('/sse/', methods=['GET'])
-def sse():
-    from time import sleep
-
-    def generate():
-        while True:
-            sleep(2)
-            yield 'data: ' + json.dumps({'hello': 'world'}) + '\n\n'
-
-    return Response(generate(), mimetype="text/event-stream")
-
-
 @app.route('/<string:app_key>/<string:channel>/', methods=['GET'])
 def sse(app_key, channel):
     def generate():
@@ -33,7 +21,13 @@ def sse(app_key, channel):
             out['event'] = json_['event']
             yield 'data: ' + json.dumps(out) + '\n\n'
 
-    return Response(generate(), mimetype="text/event-stream")
+    headers = {}
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Credentials'] = 'true'
+#    headers["Access-Control-Allow-Methods"] = "OPTIONS, GET, POST"
+#    headers["Access-Control-Allow-Headers"] = "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
+
+    return Response(generate(), mimetype="text/event-stream", headers=headers)
 
 
 @app.route('/', methods=['GET'])

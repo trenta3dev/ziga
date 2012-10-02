@@ -62,5 +62,5 @@ Ziga.prototype.unsubscribe = function (channelName) {
 };
 
 Ziga.prototype._getURL = function () {
-  return "http://localhost:4242/" + this.applicationKey + "/";
+  return "http://localhost:9442/" + this.applicationKey + "/";
 };

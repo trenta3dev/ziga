@@ -9,7 +9,7 @@ from ziga import app
 manager = Manager(app)
 
 
-manager.add_command('runserver',  Server(port=4242))
+manager.add_command('runserver',  Server(port=9442))
 
 
 if __name__ == "__main__":
