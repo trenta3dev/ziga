@@ -9,7 +9,7 @@ def sse(app_key, channel):
         pubsub = redis.pubsub()
         pubsub.subscribe('{}:{}'.format(app_key, channel))
         for data in pubsub.listen():
-            print data
+#            print data
 
             if not data['type'] == 'message':
                 continue
@@ -23,7 +23,8 @@ def sse(app_key, channel):
 
     headers = {}
     headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Allow-Credentials'] = 'true'
+    headers['Cache-Control'] = 'no-cache'
+#    headers['Access-Control-Allow-Credentials'] = 'true'
 #    headers["Access-Control-Allow-Methods"] = "OPTIONS, GET, POST"
 #    headers["Access-Control-Allow-Headers"] = "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
 
@@ -37,14 +38,19 @@ def index():
 
 @app.route('/<string:app_key>/<string:channel>/', methods=['POST'])
 def create_event(app_key, channel):
-    print app_key, channel, request.json
-
     data = request.json
+
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+    }
+
+    if not data:
+        return Response(status=400, headers=headers)
 
     event = data.get('event')
 
     if not event:
-        return Response(status=400)
+        return Response(status=400, headers=headers)
 
     redis.publish('{}:{}'.format(app_key, channel, event), json.dumps(data))
 
